@@ -23,7 +23,7 @@
             writer.Put(player.username);
         });
     }
-    
+
     public static void PlayerConnected(int toId, Player player)
     {
         NetworkManager.Instance.Server.SendPacketTo(ServerPacket.PlayerConnected, toId, writer =>

@@ -1142,6 +1142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyUIManager
   lobbyPlayerPrefab: {fileID: 3180986984894536218, guid: e8cb6409993c59b49af525aeceaf38c5, type: 3}
   lobbyPlayersParent: {fileID: 391057751}
+  startButton: {fileID: 960537928}
 --- !u!1 &556384448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,7 +1940,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 960537931}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 539816830}
+        m_TargetAssemblyTypeName: LobbyUIManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &960537931
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -51,7 +51,7 @@ public class Server
 
     private void OnConnectionRequest(ConnectionRequest request)
     {
-        if (server.ConnectedPeersCount < NetworkSettings.MaxPlayers)
+        if (server.ConnectedPeersCount < NetworkSettings.MaxPlayers && GameManager.Instance.gameState == GameState.Lobby)
             request.AcceptIfKey(NetworkSettings.ConnectionKey);
         else
             request.Reject();

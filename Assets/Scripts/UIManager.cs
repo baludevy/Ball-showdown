@@ -8,6 +8,7 @@ public enum UIState
     HostGame,
     JoinGame,
     Lobby,
+    BallSelection,
 }
 
 public class UIManager : MonoBehaviour
@@ -63,6 +64,11 @@ public class UIManager : MonoBehaviour
             case UIState.Lobby:
                 lobbyUI.gameObject.SetActive(true);
 
+                mainMenuUI.SetActive(false);
+                connectionUI.SetActive(false);
+                break;
+            case UIState.BallSelection:
+                lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
                 break;
