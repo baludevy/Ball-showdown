@@ -297,9 +297,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallCatalog
   balls:
-  - name: 
-    descrption: 
-    sprite: {fileID: 0}
+  - name: Burst ball
+    descrption: 'Dashes forward, with higher speed, and a shield, while dealing quadruple damage for a short time!
+
+'
+    type: 1
+    sprite: {fileID: 4510983118602267570, guid: 18b636a532b8a884bb3842a3bacc5523, type: 3}
+  - name: Cell ball
+    descrption: Starts by one, and if it survives for a short time, then it will grow and if killed will turn into 3 small ones, which can still grow!
+    type: 0
+    sprite: {fileID: 2667734037002575307, guid: a45816a2868cf574db969d72af5e7a4f, type: 3}
+  - name: Charge ball
+    descrption: 'Gets bigger and by time it deals higher damage at contact! '
+    type: 2
+    sprite: {fileID: 7086819578037430900, guid: 48fe06a722619384da991fc45f2d228c, type: 3}
+  - name: Fibonacci ball
+    descrption: Next hit will deal the sum of the current and previous damage
+    type: 3
+    sprite: {fileID: -6103647335879513256, guid: 92f95944b40d48f48836fe9a06248385, type: 3}
+  - name: Glass ball
+    descrption: Each time it hit the side or the enemy, it will leave a glass shard behind, which damage the enemy if touched!
+    type: 4
+    sprite: {fileID: -1530846050419327128, guid: 0c0e3c17751ba8a44bbfb913241b0975, type: 3}
+  - name: Harpoon ball
+    descrption: Every few seconds, it will shot a harpoon, which bounces around until the enemy is hit, then pulls it back, while damaging the enemy
+    type: 5
+    sprite: {fileID: 824558616066535325, guid: 0eac54f474fd7794ba9bd8b85e17a322, type: 3}
+  - name: Poison Spike ball
+    descrption: Every time it hits the side, it will leave a poisonous spike at the place, which damages, and gives a poisonous effect to the enemy, on contact.
+    type: 7
+    sprite: {fileID: -4720003246949859469, guid: 3a9e048be0ac79b48bb0586e24adbfe1, type: 3}
+  - name: Ice ball
+    descrption: Leaves an icy trail behind, which if the enemy touches, it will deal damage and freezes the enemy, until it melts.
+    type: 6
+    sprite: {fileID: -8328869616974198999, guid: fc76d7cd92ff26a4794a2e789fb30c6f, type: 3}
+  - name: Reforge ball
+    descrption: Has a second ball, which deals damage if it hits the enemy, but whenever it hits the main ball, it will get upgraded and deal more damage on contact.
+    type: 8
+    sprite: {fileID: 2409135313135277873, guid: 482d231334693544cb33eac9abe4ff56, type: 3}
+  - name: Shuriken ball
+    descrption: Shoots a shuriken, every few seconds, which bounces around a few times, shoots more at lower health.
+    type: 10
+    sprite: {fileID: -2802911485559060994, guid: c2ddb5c56baa4cb4392dea3c21c9d196, type: 3}
+  - name: Kawaity ball
+    descrption: Says uwu on every hit and has an 1% chance to deal 1 million damage.
+    type: 9
+    sprite: {fileID: 4994432919212274950, guid: 1e664c85cb22bed4db3c8585ff52cb32, type: 3}
+  - name: Speedy ball
+    descrption: Each time it hits the corner, it will get faster and deal more damage on contact.
+    type: 11
+    sprite: {fileID: -291365120510972084, guid: a3f68d2a3813c564d963eaf8113a4cfc, type: 3}
+  - name: Spider ball
+    descrption: 'Each time it hits the side, it will leave a web attached to the side and to the ball, and whenever the enemy goes through it. '
+    type: 12
+    sprite: {fileID: -7897101310337535029, guid: b370a9e9b797a674eb7f3fc3227c93d8, type: 3}
+  - name: Spike ball
+    descrption: 'Every time it hits the side, it will leave a spike at the place, the more spike there are, the more damage it will deal on contact. '
+    type: 13
+    sprite: {fileID: 7810230084885551629, guid: 1895770b11cf12d4db6c6533e7de932b, type: 3}
+  - name: Verity ball
+    descrption: Hey its me its verity! Ask me anything! I know about a million things! I'll do everything! Each time it takes damage, it has a chance to be bigger and deal more damage.
+    type: 14
+    sprite: {fileID: 308624807404829795, guid: 19147772edf1fe54d94721d7e88d9988, type: 3}
 --- !u!1 &195020504
 GameObject:
   m_ObjectHideFlags: 0
