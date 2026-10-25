@@ -20,15 +20,27 @@ public class BallArena : MonoBehaviour
 
     public float ArenaSize => arenaSize;
 
-    public void SetupArena(List<Transform> players)
+    public static BallArena Instance;
+
+    public void Awake()
     {
-        if (players == null)
+        if (Instance == null)
+            Instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void SetupArena(List<Ball> balls)
+    {
+        if (balls == null)
         {
             Debug.LogError("Player list is null.");
             return;
         }
 
-        int playerCount = players.Count;
+        int playerCount = balls.Count;
 
         if (playerCount == 0)
         {
@@ -43,7 +55,7 @@ public class BallArena : MonoBehaviour
 
         CalculateArenaSize(playerCount);
         CreateWalls();
-        PlacePlayers(players);
+        PlacePlayers(balls);
         UpdateCamera();
     }
 
@@ -117,7 +129,7 @@ public class BallArena : MonoBehaviour
         );
     }
 
-    private void ClearWalls()
+    public void ClearWalls()
     {
         foreach (GameObject wall in walls)
         {
@@ -158,13 +170,15 @@ public class BallArena : MonoBehaviour
         BoxCollider2D wallCollider = wall.AddComponent<BoxCollider2D>();
         wallCollider.size = Vector2.one;
         wallCollider.isTrigger = false;
+        
+        wall.tag = "Wall";
 
         walls.Add(wall);
     }
 
-    private void PlacePlayers(List<Transform> players)
+    private void PlacePlayers(List<Ball> balls)
     {
-        int playerCount = players.Count;
+        int playerCount = balls.Count;
 
         float clearance = GetSpawnClearance();
         float halfSize = arenaSize / 2f;
@@ -172,7 +186,7 @@ public class BallArena : MonoBehaviour
 
         if (playerCount == 1)
         {
-            PlacePlayer(players[0], Vector2.zero);
+            PlacePlayer(balls[0], Vector2.zero);
             return;
         }
 
@@ -185,7 +199,7 @@ public class BallArena : MonoBehaviour
             float distance = startingDistance + i * distanceBetweenPlayers;
             Vector2 position = GetPerimeterPosition(distance, spawnRadius);
 
-            PlacePlayer(players[i], position);
+            PlacePlayer(balls[i], position);
         }
     }
 
@@ -247,19 +261,23 @@ public class BallArena : MonoBehaviour
         );
     }
 
-    private void PlacePlayer(Transform player, Vector2 position)
+    private void PlacePlayer(Ball ball, Vector2 position)
     {
-        if (player == null)
-        {
+        if (ball == null)
             return;
-        }
 
-        Vector3 worldPosition = transform.position;
-        worldPosition.x += position.x;
-        worldPosition.y += position.y;
-        worldPosition.z = player.position.z;
+        Vector3 spawnCenter = transform.TransformPoint(
+            new Vector3(position.x, position.y, 0f)
+        );
+        
+        Vector3 worldOffset = ball.transform.TransformVector(
+            new Vector3(0, 0.5f, 0f)
+        );
+        
+        Vector3 worldPosition = spawnCenter - worldOffset;
+        worldPosition.z = ball.transform.position.z;
 
-        Rigidbody2D body = player.GetComponent<Rigidbody2D>();
+        Rigidbody2D body = ball.GetComponent<Rigidbody2D>();
 
         if (body != null)
         {
@@ -268,7 +286,7 @@ public class BallArena : MonoBehaviour
             body.angularVelocity = 0f;
         }
 
-        player.position = worldPosition;
+        ball.transform.position = worldPosition;
     }
 
     private void UpdateCamera()
@@ -330,7 +348,7 @@ public class BallArena : MonoBehaviour
 
     public Vector2 GetArenaCenter()
     {
-        return new Vector2(arenaSize, arenaSize);
+        return new Vector2(transform.position.x, transform.position.y);
     }
 
     public Vector2 GetArenaBounds()

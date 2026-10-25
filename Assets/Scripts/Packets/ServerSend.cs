@@ -1,9 +1,16 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib;
-using UnityEngine;
 
 public static class ServerSend
 {
+    public static void OwnID(int id)
+    {
+        NetworkManager.Instance.Server.SendPacketTo(ServerPacket.OwnID, id, writer =>
+        {
+            writer.Put(id);
+        });
+    }
+    
     public static void CurrentGameState(int toId, GameState gameState)
     {
         NetworkManager.Instance.Server.SendPacketTo(ServerPacket.CurrentGameState, toId, writer =>
@@ -78,6 +85,7 @@ public static class ServerSend
             foreach (BallUpdate update in ballUpdates)
             {
                 writer.Put(update.id);
+                writer.Put(update.scale);
                 writer.Put(update.position);
             }
         }, DeliveryMethod.Unreliable);
@@ -86,6 +94,15 @@ public static class ServerSend
     public static void BallHealth(ushort id, int health)
     {
         NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.BallHealth, writer =>
+        {
+            writer.Put(id);
+            writer.Put(health);
+        });
+    }
+    
+    public static void DamageMarker(ushort id, int health)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.DamageMarker, writer =>
         {
             writer.Put(id);
             writer.Put(health);

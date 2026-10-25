@@ -54,6 +54,7 @@ public class BallManager : MonoBehaviour
                 ballUpdates.Add(new BallUpdate
                 {
                     id = ball.owner.id,
+                    scale = ball.transform.localScale,
                     position = ball.transform.position,
                 });
             }
@@ -72,6 +73,8 @@ public class BallManager : MonoBehaviour
 
             if (ball == null)
                 continue;
+            
+            ball.transform.localScale = update.scale;
 
             BallSnapshot snapshot = new BallSnapshot
             {
@@ -87,6 +90,7 @@ public class BallManager : MonoBehaviour
     }
 
     public Ball GetBall(ushort id) => spawnedBalls.Find(x => x.owner.id == id);
+    public Ball GetMyBall() => spawnedBalls.Find(x => x.owner.id == NetworkManager.Instance.myId);
 
     public void Clear()
     {

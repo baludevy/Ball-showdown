@@ -2,10 +2,12 @@
 {
     Username,
     SelectBall,
+    LockDirection,
 }
 
 public enum ServerPacket : ushort
 {
+    OwnID,
     CurrentGameState,
     PlayerConnected,
     PlayerDisconnected,
@@ -13,4 +15,5 @@ public enum ServerPacket : ushort
     SpawnBall,
     BallPosition,
     BallHealth,
+    DamageMarker,
 }

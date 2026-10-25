@@ -18,6 +18,7 @@ public class Server
     {
         PacketRouter.RegisterServerPacket((ushort)ClientPacket.Username, ServerHandle.Username);
         PacketRouter.RegisterServerPacket((ushort)ClientPacket.SelectBall, ServerHandle.SelectBall);
+        PacketRouter.RegisterServerPacket((ushort)ClientPacket.LockDirection, ServerHandle.LockDirection);
     }
 
     public void Start(int port = 6900)
@@ -61,6 +62,8 @@ public class Server
     private static void OnPeerConnectedEvent(NetPeer peer)
     {
         Debug.Log($"Incoming connection from {peer.Address}");
+        
+        ServerSend.OwnID(peer.Id);
         
         foreach (Player player in GameManager.Instance.players)
         {

@@ -7,6 +7,7 @@ public enum GameState
     None,
     Lobby,
     BallSelect,
+    DirectionChoose,
     Showdown
 }
 
@@ -17,6 +18,8 @@ public class Player
 
     public BallEntry selectedBall;
     public GameObject ball;
+    
+    public Vector2 direction;
 }
 
 public class GameManager : MonoBehaviour
@@ -51,16 +54,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private int locksNeeded;
+
+    public void LockDirection(Vector2 direction, ushort playerId)
+    {
+        BallManager.Instance.spawnedBalls[playerId].direction = direction;
+        locksNeeded--;
+
+        if (locksNeeded == 0)
+        {
+            ChangeGameState(GameState.Showdown);
+        }
+    }
+
     public void HandleGameStateChange()
     {
         UIManager ui = UIManager.Instance;
 
-        if(gameState != GameState.Showdown)
+        if(gameState != GameState.Showdown && gameState != GameState.DirectionChoose)
             BallManager.Instance.Clear();
         
         switch (gameState)
         {
             case GameState.None:
+                BallArena.Instance.ClearWalls();
                 ui.SwitchToUI(UIState.MainMenu);
                 break;
             case GameState.Lobby:
@@ -71,11 +88,23 @@ public class GameManager : MonoBehaviour
 
                 BallSelectionManager.Instance.needsSelection = players.Count;
                 BallSelectionManager.Instance.SendSelectableBalls();
+                break; 
+            case GameState.DirectionChoose:
+                BallArena.Instance.SetupArena(BallManager.Instance.spawnedBalls);
+                
+                locksNeeded = players.Count;
+                ui.SwitchToUI(UIState.DirectionChoose);
+                
                 break;
             case GameState.Showdown:
                 Debug.Log("ball mothafucking showdown");
                 
                 ui.SwitchToUI(UIState.Arena);
+                foreach (Ball ball in BallManager.Instance.spawnedBalls)
+                {
+                    ball.move = true;
+                    ball.arrow.gameObject.SetActive(false);
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +18,10 @@ public class Ball : MonoBehaviour
     public int health = 100;
 
     protected Rigidbody2D rb;
-    protected Vector2 direction;
+    public Vector2 direction;
+
+    public bool move;
+    public Transform arrow;
 
     protected bool IsHost => NetworkManager.Instance.isHost;
 
@@ -56,6 +58,9 @@ public class Ball : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (owner.id != NetworkManager.Instance.myId)
+            arrow.gameObject.SetActive(false);
+
         if (!IsHost)
             return;
 
@@ -73,7 +78,8 @@ public class Ball : MonoBehaviour
 
     protected void UpdateVelocity()
     {
-        rb.linearVelocity = direction * speed;
+        if (move)
+            rb.linearVelocity = direction * speed;
     }
 
     public virtual int GetContactDamage()

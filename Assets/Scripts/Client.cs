@@ -18,6 +18,7 @@ public class Client
 
     private static void RegisterPackets()
     {
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.OwnID, ClientHandle.OwnID);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.CurrentGameState, ClientHandle.CurrentGameState);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerConnected, ClientHandle.PlayerConnected);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerDisconnected, ClientHandle.PlayerDisconnected);

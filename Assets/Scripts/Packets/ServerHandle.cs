@@ -27,4 +27,11 @@ public static class ServerHandle
         
         BallSelectionManager.Instance.HandleBallSelection((ushort)from.Id, index);
     }
+
+    public static void LockDirection(NetPeer from, NetDataReader reader)
+    {
+        Vector2 direction = reader.GetVector2();
+        
+        GameManager.Instance.LockDirection(direction, (ushort)from.Id);
+    }
 }

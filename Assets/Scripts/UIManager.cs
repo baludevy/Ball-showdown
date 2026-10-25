@@ -10,6 +10,7 @@ public enum UIState
     Lobby,
     BallSelection,
     Waiting,
+    DirectionChoose,
     Arena,
 }
 
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject hostUI;
     [SerializeField] private GameObject joinUI;
     [SerializeField] private GameObject waitingUI;
+    [SerializeField] private GameObject directionChooseUI;
 
     public LobbyUIManager lobbyUI;
     public BallSelectionUIManager ballSelectionUI;
@@ -81,7 +83,7 @@ public class UIManager : MonoBehaviour
                 break;
             case UIState.BallSelection:
                 ballSelectionUI.gameObject.SetActive(true);
-                
+
                 lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
@@ -89,14 +91,23 @@ public class UIManager : MonoBehaviour
                 break;
             case UIState.Waiting:
                 waitingUI.SetActive(true);
-                
+
+                ballSelectionUI.gameObject.SetActive(false);
+                lobbyUI.gameObject.SetActive(false);
+                mainMenuUI.SetActive(false);
+                connectionUI.SetActive(false);
+                break;
+            case UIState.DirectionChoose:
+                directionChooseUI.SetActive(true);
+
+                waitingUI.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
                 break;
             case UIState.Arena:
-                
+
                 waitingUI.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);

@@ -65,11 +65,12 @@ public class BallSelectionManager : MonoBehaviour
         }
     }
 
+
     public void HandleBallSelection(ushort playerId, int index)
     {
         Player player = GameManager.Instance.GetPlayer(playerId);
-        if(player.selectedBall != null) return;
-        
+        if (player.selectedBall != null) return;
+
         BallEntry ball;
 
         if (playerId == 0)
@@ -84,15 +85,24 @@ public class BallSelectionManager : MonoBehaviour
             ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[playerId][index]);
             Debug.Log($"Player{playerId} chose {ball.name}");
         }
-        
+
+
         player.selectedBall = ball;
 
-        BallManager.Instance.SpawnBall(player.id, ball.type);
-
         needsSelection--;
+
         if (needsSelection == 0)
         {
-            GameManager.Instance.ChangeGameState(GameState.Showdown);
+            foreach (Player p in GameManager.Instance.players)
+            {
+                if (p.selectedBall != null)
+                {
+                    BallManager.Instance.SpawnBall(p.id, p.selectedBall.type);
+                }
+            }
+
+            GameManager.Instance.ChangeGameState(GameState.DirectionChoose);
         }
+
     }
 }

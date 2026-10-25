@@ -12,6 +12,8 @@ public class NetworkManager : MonoBehaviour
 
     public static NetworkManager Instance;
 
+    public ushort myId;
+
     private void Awake()
     {
         if (Instance == null)

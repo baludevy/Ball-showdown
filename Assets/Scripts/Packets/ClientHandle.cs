@@ -4,6 +4,13 @@ using UnityEngine;
 
 public static class ClientHandle
 {
+    public static void OwnID(NetDataReader reader)
+    {
+        ushort id = reader.GetUShort();
+
+        NetworkManager.Instance.myId = id;
+    }
+    
     public static void CurrentGameState(NetDataReader reader)
     {
         GameState gameState = (GameState)reader.GetUShort();
@@ -75,6 +82,7 @@ public static class ClientHandle
             updates.Add(new BallUpdate
             {
                 id = reader.GetUShort(),
+                scale = reader.GetVector3(),
                 position = reader.GetVector3(),
             });
         }
