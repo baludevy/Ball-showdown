@@ -7,6 +7,8 @@ public class NetworkManager : MonoBehaviour
 
     [SerializeField] private ConnectionUIManager connectionUIManager;
 
+    public bool isHost;
+    
     public static NetworkManager Instance;
 
     private void Awake()
@@ -31,6 +33,8 @@ public class NetworkManager : MonoBehaviour
     {
         Server = new Server();
         Server.Start();
+
+        isHost = true;
         
         Join("localhost");
     }
@@ -46,11 +50,19 @@ public class NetworkManager : MonoBehaviour
 
     private void Clear()
     {
-        Client.Disconnect();
-        Client = null;
+        if(Client != null)
+        {
+            Client.Disconnect();
+            Client = null;
+        }
         
-        Server.Stop();
-        Server = null;
+        if(Server != null)
+        {
+            Server.Stop();
+            Server = null;
+        }
+        
+        isHost = false;
     }
 
     private void OnApplicationQuit()
