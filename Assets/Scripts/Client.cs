@@ -24,6 +24,7 @@ public class Client
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.SelectableBalls, ClientHandle.SelectableBalls);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.SpawnBall, ClientHandle.SpawnBall);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.BallPosition, ClientHandle.BallPosition);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.BallHealth, ClientHandle.BallHealth);
     }
 
     public void Connect(string ip, int port = 6900)
@@ -68,7 +69,6 @@ public class Client
 
     private void OnNetworkReceive(NetPeer from, NetPacketReader reader, byte channel, DeliveryMethod deliveryMethod)
     {
-        Debug.Log("received packet from server");
         PacketRouter.ProcessClientMessage(reader);
     }
 

@@ -33,6 +33,8 @@ public class BallManager : MonoBehaviour
         ball.owner = player;
         ball.type = ballType;
 
+        ball.Initialize();
+
         spawnedBalls.Add(ball);
 
         if (NetworkManager.Instance.isHost)
@@ -83,6 +85,8 @@ public class BallManager : MonoBehaviour
             );
         }
     }
+
+    public Ball GetBall(ushort id) => spawnedBalls.Find(x => x.owner.id == id);
 
     public void Clear()
     {

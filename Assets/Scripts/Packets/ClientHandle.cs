@@ -81,4 +81,12 @@ public static class ClientHandle
         
         BallManager.Instance.ApplyUpdates(tick, updates);
     }
+
+    public static void BallHealth(NetDataReader reader)
+    {
+        ushort id = reader.GetUShort();
+        int health = reader.GetInt();
+        
+        BallManager.Instance.GetBall(id).SetHealth(health);
+    }
 }

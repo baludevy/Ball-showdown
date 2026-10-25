@@ -82,4 +82,13 @@ public static class ServerSend
             }
         }, DeliveryMethod.Unreliable);
     }
+
+    public static void BallHealth(ushort id, int health)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.BallHealth, writer =>
+        {
+            writer.Put(id);
+            writer.Put(health);
+        });
+    }
 }

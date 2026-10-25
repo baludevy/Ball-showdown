@@ -12,4 +12,5 @@ public enum ServerPacket : ushort
     SelectableBalls,
     SpawnBall,
     BallPosition,
+    BallHealth,
 }
