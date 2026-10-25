@@ -23,6 +23,7 @@ public class Client
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerDisconnected, ClientHandle.PlayerDisconnected);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.SelectableBalls, ClientHandle.SelectableBalls);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.SpawnBall, ClientHandle.SpawnBall);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.BallPosition, ClientHandle.BallPosition);
     }
 
     public void Connect(string ip, int port = 6900)

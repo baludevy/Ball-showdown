@@ -62,4 +62,22 @@ public static class ClientHandle
         
         BallManager.Instance.SpawnBall(ownerId, ballType);
     }
+
+    public static void BallPosition(NetDataReader reader)
+    {
+        int snapshotCount = reader.GetInt();
+        
+        List<BallSnapshot> snapshots = new List<BallSnapshot>();
+
+        for (int i = 0; i < snapshotCount; i++)
+        {
+            snapshots.Add(new BallSnapshot
+            {
+                id = reader.GetUShort(),
+                position = reader.GetVector3(),
+            });
+        }
+        
+        BallManager.Instance.ApplySnapshots(snapshots);
+    }
 }

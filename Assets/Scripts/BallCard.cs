@@ -28,6 +28,7 @@ public class BallCard : MonoBehaviour
         else
         {
             ClientSend.SelectBall(index);
+            UIManager.Instance.SwitchToUI(UIState.Waiting);
         }
     }
 }

@@ -10,6 +10,8 @@ public class BallSelectionManager : MonoBehaviour
 
     public static BallSelectionManager Instance;
 
+    public int needsSelection;
+
     private void Awake()
     {
         if (Instance == null)
@@ -58,34 +60,39 @@ public class BallSelectionManager : MonoBehaviour
 
             List<BallType> ballTypes = GetSelectableBalls();
             selectableBallsByPlayer[player.id] = ballTypes;
-            
+
             ServerSend.SelectableBalls(player.id, ballTypes);
         }
     }
 
     public void HandleBallSelection(ushort playerId, int index)
     {
-        if (NetworkManager.Instance.isHost)
+        Player player = GameManager.Instance.GetPlayer(playerId);
+        if(player.selectedBall != null) return;
+        
+        BallEntry ball;
+
+        if (playerId == 0)
         {
-            BallEntry ball;
-            
-            if (playerId == 0)
-            {
-                ball = ownSelectableBalls[index];
-                Debug.Log($"Host chose {ball.name}");
-            }
-            else
-            {
-                ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[playerId][index]);
-                Debug.Log($"Player{playerId} chose {ball.name}");
-            }
-            
-            Player player = GameManager.Instance.GetPlayer(playerId);
-            player.selectedBall = ball;
-            
-            BallManager.Instance.SpawnBall(player.id, ball.type);
+            ball = ownSelectableBalls[index];
+            Debug.Log($"Host chose {ball.name}");
+
+            UIManager.Instance.SwitchToUI(UIState.Waiting);
+        }
+        else
+        {
+            ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[playerId][index]);
+            Debug.Log($"Player{playerId} chose {ball.name}");
         }
         
-        UIManager.Instance.SwitchToUI(UIState.Arena);
+        player.selectedBall = ball;
+
+        BallManager.Instance.SpawnBall(player.id, ball.type);
+
+        needsSelection--;
+        if (needsSelection == 0)
+        {
+            GameManager.Instance.ChangeGameState(GameState.Showdown);
+        }
     }
 }

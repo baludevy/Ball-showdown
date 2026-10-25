@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class ServerSend
 {
@@ -63,6 +64,20 @@ public static class ServerSend
         {
             writer.Put(ownerId);
             writer.Put((byte)ball);
+        });
+    }
+
+    public static void BallPosition(List<BallSnapshot> ballSnapshots)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.BallPosition, writer =>
+        {
+            writer.Put(ballSnapshots.Count);
+            
+            foreach (BallSnapshot snapshot in ballSnapshots)
+            {
+                writer.Put(snapshot.id);
+                writer.Put(snapshot.position);
+            }
         });
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -37,5 +38,44 @@ public class BallManager : MonoBehaviour
         {
             ServerSend.SpawnBall(ownerId, ballType);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (NetworkManager.Instance.isHost)
+        {
+            List<BallSnapshot> ballSnapshots = new List<BallSnapshot>();
+
+            foreach (Ball ball in spawnedBalls)
+            {
+                ballSnapshots.Add(new BallSnapshot
+                {
+                    id = ball.owner.id,
+                    position = ball.transform.position,
+                });
+            }
+        
+            ServerSend.BallPosition(ballSnapshots);
+        }
+    }
+
+    public void ApplySnapshots(List<BallSnapshot> snapshots)
+    {
+        foreach (BallSnapshot snapshot in snapshots)
+        {
+            Ball ball = spawnedBalls.Find(x => x.owner.id == snapshot.id);
+            
+            ball.transform.position = snapshot.position;
+        }
+    }
+
+    public void Clear()
+    {
+        foreach (Ball ball in spawnedBalls)
+        {
+            Destroy(ball.gameObject);
+        }
+        
+        spawnedBalls.Clear();
     }
 }

@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
     {
         UIManager ui = UIManager.Instance;
 
+        if(gameState != GameState.Showdown)
+            BallManager.Instance.Clear();
+        
         switch (gameState)
         {
             case GameState.None:
@@ -65,10 +68,14 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BallSelect:
                 ui.SwitchToUI(UIState.BallSelection);
-                
+
+                BallSelectionManager.Instance.needsSelection = players.Count;
                 BallSelectionManager.Instance.SendSelectableBalls();
                 break;
             case GameState.Showdown:
+                Debug.Log("ball mothafucking showdown");
+                
+                ui.SwitchToUI(UIState.Arena);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
