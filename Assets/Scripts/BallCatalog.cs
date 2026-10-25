@@ -3,11 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+public enum BallType
+{
+    Cell,
+    Burst,
+    Charge,
+    Fibonacci,
+    Glass,
+    Harpoon,
+    Ice,
+    PoisonSpike,
+    Reforge,
+    Kawaity,
+    Shuriken,
+    Speedy,
+    Spider,
+    Spike,
+    Verity,
+}
+
+[Serializable]
 public class BallEntry
 {
     public string name;
     [TextArea(10, 20)]
     public string descrption;
+    public BallType type;
     public Sprite sprite;
 }
 

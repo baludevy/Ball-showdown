@@ -7,6 +7,7 @@
             writer.Put((ushort)gameState);
         });
     }
+    
     public static void CurrentGameState(GameState gameState)
     {
         NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.CurrentGameState, writer =>
@@ -39,5 +40,10 @@
         {
             writer.Put(id);
         });
+    }
+
+    public static void SelectableBalls(int toId)
+    {
+        
     }
 }
