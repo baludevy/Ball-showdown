@@ -21,6 +21,13 @@ public class BallCard : MonoBehaviour
 
     public void SelectBall()
     {
-        
+        if (NetworkManager.Instance.isHost)
+        {
+            BallSelectionManager.Instance.HandleBallSelection(0, index);
+        }
+        else
+        {
+            ClientSend.SelectBall(index);
+        }
     }
 }

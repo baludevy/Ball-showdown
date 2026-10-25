@@ -45,10 +45,10 @@ public static class ClientHandle
             ballTypes.Add(ball);
         }
         
+        BallSelectionManager.Instance.ownSelectableBalls.Clear();
         foreach (BallType ballType in ballTypes)
         {
             BallEntry ball = BallCatalog.Instance.GetBall(ballType);
-            BallSelectionManager.Instance.ownSelectableBalls.Clear();
             BallSelectionManager.Instance.ownSelectableBalls.Add(ball);
         }
         

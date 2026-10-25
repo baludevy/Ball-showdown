@@ -6,7 +6,7 @@ public class BallSelectionManager : MonoBehaviour
 {
     public List<BallEntry> ownSelectableBalls = new List<BallEntry>();
 
-    public Dictionary<ushort, List<BallType>> selectableBallsByPlayer = new Dictionary<ushort, List<BallType>>();
+    private Dictionary<ushort, List<BallType>> selectableBallsByPlayer = new Dictionary<ushort, List<BallType>>();
 
     public static BallSelectionManager Instance;
 
@@ -27,7 +27,7 @@ public class BallSelectionManager : MonoBehaviour
         List<BallEntry> balls = BallCatalog.Instance.balls;
 
         List<BallType> selectableBalls = balls
-            .OrderBy(_ => UnityEngine.Random.value)
+            .OrderBy(_ => Random.value)
             .Select(ball => ball.type)
             .Distinct()
             .Take(3)
@@ -40,11 +40,11 @@ public class BallSelectionManager : MonoBehaviour
     {
         foreach (Player player in GameManager.Instance.players)
         {
-            if (player.id == 0)
+            if (player.id == 0 && NetworkManager.Instance.isHost)
             {
                 List<BallType> ownBallTypes = GetSelectableBalls();
                 ownSelectableBalls.Clear();
-                
+
                 foreach (BallType ballType in ownBallTypes)
                 {
                     BallEntry ball = BallCatalog.Instance.GetBall(ballType);
@@ -58,6 +58,28 @@ public class BallSelectionManager : MonoBehaviour
 
             List<BallType> ballTypes = GetSelectableBalls();
             selectableBallsByPlayer[player.id] = ballTypes;
+            
+            ServerSend.SelectableBalls(player.id, ballTypes);
+        }
+    }
+
+    public void HandleBallSelection(int playerId, int index)
+    {
+        if (NetworkManager.Instance.isHost)
+        {
+            if (playerId == 0)
+            {
+                BallEntry ball = ownSelectableBalls[index];
+                
+                Debug.Log($"Host chose {ball.name}");
+            }
+            else
+            {
+                BallEntry ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[(ushort)playerId][index]);
+                
+                
+                Debug.Log($"Player{playerId} chose {ball.name}");
+            }
         }
     }
 }

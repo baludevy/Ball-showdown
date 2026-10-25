@@ -46,7 +46,7 @@ public static class ServerSend
 
     public static void SelectableBalls(ushort toId, List<BallType> balls)
     {
-        NetworkManager.Instance.Server.SendPacketTo(ServerPacket.PlayerDisconnected, toId, writer =>
+        NetworkManager.Instance.Server.SendPacketTo(ServerPacket.SelectableBalls, toId, writer =>
         {
             writer.Put(balls.Count);
 

@@ -17,6 +17,7 @@ public class Server
     private static void RegisterPackets()
     {
         PacketRouter.RegisterServerPacket((ushort)ClientPacket.Username, ServerHandle.Username);
+        PacketRouter.RegisterServerPacket((ushort)ClientPacket.SelectBall, ServerHandle.SelectBall);
     }
 
     public void Start(int port = 6900)

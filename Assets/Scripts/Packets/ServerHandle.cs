@@ -20,4 +20,11 @@ public static class ServerHandle
 
         ServerSend.PlayerConnected(player);
     }
+
+    public static void SelectBall(NetPeer from, NetDataReader reader)
+    {
+        int index = reader.GetByte();
+        
+        BallSelectionManager.Instance.HandleBallSelection(from.Id, index);
+    }
 }

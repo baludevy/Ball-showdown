@@ -7,4 +7,12 @@
             writer.Put(username);
         });
     }
+
+    public static void SelectBall(int index)
+    {
+        NetworkManager.Instance.Client.SendPacket(ClientPacket.SelectBall, writer =>
+        {
+            writer.Put((byte)index);
+        });
+    }
 }

@@ -9,6 +9,7 @@ public enum UIState
     JoinGame,
     Lobby,
     BallSelection,
+    Arena,
 }
 
 public class UIManager : MonoBehaviour
@@ -45,6 +46,7 @@ public class UIManager : MonoBehaviour
 
                 lobbyUI.gameObject.SetActive(false);
                 connectionUI.SetActive(false);
+                ballSelectionUI.gameObject.SetActive(false);
                 break;
             case UIState.HostGame:
                 connectionUI.SetActive(true);
@@ -53,6 +55,7 @@ public class UIManager : MonoBehaviour
 
                 mainMenuUI.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
+                ballSelectionUI.gameObject.SetActive(false);
                 break;
             case UIState.JoinGame:
                 connectionUI.SetActive(true);
@@ -61,16 +64,24 @@ public class UIManager : MonoBehaviour
 
                 mainMenuUI.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
+                ballSelectionUI.gameObject.SetActive(false);
                 break;
             case UIState.Lobby:
                 lobbyUI.gameObject.SetActive(true);
 
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
+                ballSelectionUI.gameObject.SetActive(false);
                 break;
             case UIState.BallSelection:
                 ballSelectionUI.gameObject.SetActive(true);
                 
+                lobbyUI.gameObject.SetActive(false);
+                mainMenuUI.SetActive(false);
+                connectionUI.SetActive(false);
+                break;
+            case UIState.Arena:
+                ballSelectionUI.gameObject.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);

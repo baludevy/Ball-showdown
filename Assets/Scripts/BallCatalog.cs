@@ -30,6 +30,7 @@ public class BallEntry
     public string descrption;
     public BallType type;
     public Sprite sprite;
+    public GameObject prefab;
 }
 
 public class BallCatalog : MonoBehaviour
