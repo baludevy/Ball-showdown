@@ -1,4 +1,5 @@
-﻿using LiteNetLib;
+﻿using System;
+using LiteNetLib;
 using LiteNetLib.Utils;
 using UnityEngine;
 
@@ -7,10 +8,19 @@ public class Client
     private EventBasedNetListener listener;
     private NetManager client;
 
+    private NetPeer serverPeer;
+
     public Client()
     {
         listener = new EventBasedNetListener();
         client = new NetManager(listener);
+    }
+
+    private static void RegisterPackets()
+    {
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.CurrentGameState, ClientHandle.CurrentGameState);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerConnected, ClientHandle.PlayerConnected);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerDisconnected, ClientHandle.PlayerDisconnected);
     }
 
     public void Connect(string ip, int port = 6900)
@@ -19,6 +29,7 @@ public class Client
         client.Connect(ip, port, NetworkSettings.ConnectionKey);
 
         AssignEvents();
+        RegisterPackets();
     }
 
     public void Disconnect()
@@ -34,11 +45,37 @@ public class Client
 
     private void AssignEvents()
     {
+        listener.PeerConnectedEvent += OnClientConnected;
+        listener.PeerDisconnectedEvent += OnClientDisconnected;
         listener.NetworkReceiveEvent += OnNetworkReceive;
     }
 
-    private void OnNetworkReceive(NetPeer from, NetDataReader reader, byte channel, DeliveryMethod deliveryMethod)
+    private void OnClientConnected(NetPeer peer)
     {
-        Debug.Log($"We got: {reader.GetString()}, from: {from.Address}");
+        serverPeer = peer;
+        
+        NetworkManager.Instance.SendUsername();
+    }
+
+    private void OnClientDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
+    {
+        Debug.Log($"Disconnected: {disconnectInfo.Reason}");
+        NetworkManager.Instance.Clear();
+    }
+
+    private void OnNetworkReceive(NetPeer from, NetPacketReader reader, byte channel, DeliveryMethod deliveryMethod)
+    {
+        Debug.Log("received packet from server");
+        PacketRouter.ProcessClientMessage(reader);
+    }
+
+    public void SendPacket(ClientPacket packetId, Action<NetDataWriter> writeData = null, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered)
+    {
+        NetDataWriter writer = new NetDataWriter();
+
+        writer.Put((ushort)packetId);
+        writeData?.Invoke(writer);
+
+        serverPeer.Send(writer, deliveryMethod);
     }
 }
