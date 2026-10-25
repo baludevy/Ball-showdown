@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public enum GameState
 {
@@ -8,9 +10,17 @@ public enum GameState
     Showdown
 }
 
+public class Player
+{
+    public ushort id;
+    public string username;
+}
+
 public class GameManager : MonoBehaviour
 {
     public GameState gameState = GameState.None;
+
+    public List<Player> players = new List<Player>();
 
     public static GameManager Instance;
 
@@ -26,15 +36,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChangeGameState(GameState newGameState)
+    public void ChangeGameState(GameState newGameState, bool broadcast = true)
     {
         gameState = newGameState;
 
         HandleGameStateChange();
 
-        if (NetworkManager.Instance.isHost)
+        if (NetworkManager.Instance.isHost && broadcast)
         {
-            // broadcast gamestate change
+            ServerSend.CurrentGameState(gameState);
         }
     }
 
@@ -45,7 +55,28 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.None:
+                ui.SwitchToUI(UIState.MainMenu);
                 break;
+            case GameState.Lobby:
+                ui.SwitchToUI(UIState.Lobby);
+                break;
+            case GameState.BallSelect:
+            case GameState.Showdown:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
+
+    public void AddPlayer(Player player)
+    {
+        players.Add(player);
+    }
+
+    public void RemovePlayer(ushort id)
+    {
+        players.Remove(GetPlayer(id));
+    }
+
+    public Player GetPlayer(ushort id) => players.Find(x => x.id == id);
 }

@@ -36,33 +36,46 @@ public class NetworkManager : MonoBehaviour
 
         isHost = true;
         
-        Join("localhost");
+        GameManager.Instance.AddPlayer(new Player
+        {
+            id = 0,
+            username = connectionUIManager.GetName()
+        });
+        
+        GameManager.Instance.ChangeGameState(GameState.Lobby, broadcast: false);
     }
 
     public void Join(string ip = "")
     {
         if (ip == "")
             ip = connectionUIManager.GetIP();
-        
+
         Client = new Client();
         Client.Connect(ip);
     }
 
-    private void Clear()
+    public void SendUsername()
     {
-        if(Client != null)
+        ClientSend.Username(connectionUIManager.GetName());
+    }
+
+    public void Clear()
+    {
+        if (Client != null)
         {
             Client.Disconnect();
             Client = null;
         }
-        
-        if(Server != null)
+
+        if (Server != null)
         {
             Server.Stop();
             Server = null;
         }
-        
+
         isHost = false;
+        
+        GameManager.Instance.ChangeGameState(GameState.None);
     }
 
     private void OnApplicationQuit()

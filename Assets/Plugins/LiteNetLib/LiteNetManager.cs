@@ -82,7 +82,7 @@ namespace LiteNetLib
 
         private long _connectedPeersCount;
         private readonly PacketLayerBase _extraPacketLayer;
-        private int _lastPeerId;
+        private int _lastPeerId = 1;
         private ConcurrentQueue<int> _peerIds = new ConcurrentQueue<int>();
 
         private readonly object _eventLock = new object();
@@ -1516,7 +1516,7 @@ namespace LiteNetLib
             //clear peers
             ClearPeerSet();
             _peerIds = new ConcurrentQueue<int>();
-            _lastPeerId = 0;
+            _lastPeerId = 1;
 
 #if DEBUG || SIMULATE_NETWORK
             lock (_pingSimulationList)

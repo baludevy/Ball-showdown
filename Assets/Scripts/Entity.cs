@@ -1,8 +1,6 @@
-using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+public sealed class Entity : MonoBehaviour
 {
     public ushort entityId {get; private set; }
 
@@ -11,7 +9,7 @@ public class Entity : MonoBehaviour
         this.entityId = id;
     }
 
-    public virtual void ApplySnapshot(EntitySnapshot from, EntitySnapshot to, float t)
+    public void ApplySnapshot(EntitySnapshot from, EntitySnapshot to, float t)
     {
         
     }

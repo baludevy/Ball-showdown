@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using LiteNetLib;
 using LiteNetLib.Utils;
-using UnityEngine;
 
 public static class PacketRouter
 {
@@ -31,16 +30,17 @@ public static class PacketRouter
 
     public static void ProcessServerMessage(NetPeer sender, NetPacketReader reader)
     {
-        if (reader ==  null) return;
+        if (reader == null) return;
 
         try
         {
             if (!IsPacketValid(reader)) return;   
 
             ushort packetId = reader.GetUShort();
-            if (!TryGetClientHandler(packetId, out var callback)) return;
+            
+            if (!TryGetServerHandler(packetId, out ServerMessageCallback callback)) return;
 
-            callback(reader);
+            callback(sender, reader);
         }
         catch (Exception)
         {
@@ -61,7 +61,10 @@ public static class PacketRouter
             if (!IsPacketValid(reader)) return;
 
             ushort packetId = reader.GetUShort();
-            if (!TryGetClientHandler(packetId, out var callback)) return;
+            
+            if (!TryGetClientHandler(packetId, out ClientMessageCallback callback)) return;
+            
+            callback(reader);
         }
         catch (Exception)
         {
