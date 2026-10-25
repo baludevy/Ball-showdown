@@ -252,6 +252,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80331904}
   m_CullTransparentMesh: 1
+--- !u!1 &107276755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 107276756}
+  - component: {fileID: 107276757}
+  m_Layer: 0
+  m_Name: BallManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &107276756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107276755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &107276757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107276755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb4be2789e44d65879c6c9899dcbfb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BallManager
+  spawnedBalls: []
 --- !u!1 &112518129
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,62 +348,77 @@ MonoBehaviour:
 '
     type: 1
     sprite: {fileID: 4510983118602267570, guid: 18b636a532b8a884bb3842a3bacc5523, type: 3}
+    prefab: {fileID: 0}
   - name: Cell ball
     descrption: Starts by one, and if it survives for a short time, then it will grow and if killed will turn into 3 small ones, which can still grow!
     type: 0
     sprite: {fileID: 2667734037002575307, guid: a45816a2868cf574db969d72af5e7a4f, type: 3}
+    prefab: {fileID: 3017477859961451353, guid: 2aa1778e8229999479dd15524bc4d230, type: 3}
   - name: Charge ball
     descrption: 'Gets bigger and by time it deals higher damage at contact! '
     type: 2
     sprite: {fileID: 7086819578037430900, guid: 48fe06a722619384da991fc45f2d228c, type: 3}
+    prefab: {fileID: 0}
   - name: Fibonacci ball
     descrption: Next hit will deal the sum of the current and previous damage
     type: 3
     sprite: {fileID: -6103647335879513256, guid: 92f95944b40d48f48836fe9a06248385, type: 3}
+    prefab: {fileID: 0}
   - name: Glass ball
     descrption: Each time it hit the side or the enemy, it will leave a glass shard behind, which damage the enemy if touched!
     type: 4
     sprite: {fileID: -1530846050419327128, guid: 0c0e3c17751ba8a44bbfb913241b0975, type: 3}
+    prefab: {fileID: 0}
   - name: Harpoon ball
     descrption: Every few seconds, it will shot a harpoon, which bounces around until the enemy is hit, then pulls it back, while damaging the enemy
     type: 5
     sprite: {fileID: 824558616066535325, guid: 0eac54f474fd7794ba9bd8b85e17a322, type: 3}
+    prefab: {fileID: 0}
   - name: Poison Spike ball
     descrption: Every time it hits the side, it will leave a poisonous spike at the place, which damages, and gives a poisonous effect to the enemy, on contact.
     type: 7
     sprite: {fileID: -4720003246949859469, guid: 3a9e048be0ac79b48bb0586e24adbfe1, type: 3}
+    prefab: {fileID: 0}
   - name: Ice ball
     descrption: Leaves an icy trail behind, which if the enemy touches, it will deal damage and freezes the enemy, until it melts.
     type: 6
     sprite: {fileID: -8328869616974198999, guid: fc76d7cd92ff26a4794a2e789fb30c6f, type: 3}
+    prefab: {fileID: 0}
   - name: Reforge ball
     descrption: Has a second ball, which deals damage if it hits the enemy, but whenever it hits the main ball, it will get upgraded and deal more damage on contact.
     type: 8
     sprite: {fileID: 2409135313135277873, guid: 482d231334693544cb33eac9abe4ff56, type: 3}
+    prefab: {fileID: 0}
   - name: Shuriken ball
     descrption: Shoots a shuriken, every few seconds, which bounces around a few times, shoots more at lower health.
     type: 10
     sprite: {fileID: -2802911485559060994, guid: c2ddb5c56baa4cb4392dea3c21c9d196, type: 3}
+    prefab: {fileID: 0}
   - name: Kawaity ball
     descrption: Says uwu on every hit and has an 1% chance to deal 1 million damage.
     type: 9
     sprite: {fileID: 4994432919212274950, guid: 1e664c85cb22bed4db3c8585ff52cb32, type: 3}
+    prefab: {fileID: 0}
   - name: Speedy ball
     descrption: Each time it hits the corner, it will get faster and deal more damage on contact.
     type: 11
     sprite: {fileID: -291365120510972084, guid: a3f68d2a3813c564d963eaf8113a4cfc, type: 3}
+    prefab: {fileID: 0}
   - name: Spider ball
     descrption: 'Each time it hits the side, it will leave a web attached to the side and to the ball, and whenever the enemy goes through it. '
     type: 12
     sprite: {fileID: -7897101310337535029, guid: b370a9e9b797a674eb7f3fc3227c93d8, type: 3}
+    prefab: {fileID: 0}
   - name: Spike ball
     descrption: 'Every time it hits the side, it will leave a spike at the place, the more spike there are, the more damage it will deal on contact. '
     type: 13
     sprite: {fileID: 7810230084885551629, guid: 1895770b11cf12d4db6c6533e7de932b, type: 3}
+    prefab: {fileID: 0}
   - name: Verity ball
     descrption: Hey its me its verity! Ask me anything! I know about a million things! I'll do everything! Each time it takes damage, it has a chance to be bigger and deal more damage.
     type: 14
     sprite: {fileID: 308624807404829795, guid: 19147772edf1fe54d94721d7e88d9988, type: 3}
+    prefab: {fileID: 0}
 --- !u!1 &233451899
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,6 +1671,82 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &668909302
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 668909303}
+  - component: {fileID: 668909305}
+  - component: {fileID: 668909304}
+  m_Layer: 5
+  m_Name: Waiting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &668909303
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668909302}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2089095718}
+  m_Father: {fileID: 1460836819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &668909304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668909302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &668909305
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668909302}
+  m_CullTransparentMesh: 1
 --- !u!1 &738059274
 GameObject:
   m_ObjectHideFlags: 0
@@ -2787,6 +2923,7 @@ RectTransform:
   - {fileID: 747475189}
   - {fileID: 503492542}
   - {fileID: 539816826}
+  - {fileID: 668909303}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2810,6 +2947,7 @@ MonoBehaviour:
   connectionUI: {fileID: 1335152243}
   hostUI: {fileID: 1592853437}
   joinUI: {fileID: 1786752432}
+  waitingUI: {fileID: 668909302}
   lobbyUI: {fileID: 539816830}
   ballSelectionUI: {fileID: 503492547}
 --- !u!1 &1477284354
@@ -4529,6 +4667,143 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2060840187}
   m_CullTransparentMesh: 1
+--- !u!1 &2089095717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2089095718}
+  - component: {fileID: 2089095720}
+  - component: {fileID: 2089095719}
+  m_Layer: 5
+  m_Name: Title (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2089095718
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089095717}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 668909303}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 600, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2089095719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089095717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Waiting for other players...
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 48
+  m_fontSizeBase: 48
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656bu
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &2089095720
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089095717}
+  m_CullTransparentMesh: 1
 --- !u!1 &2124827233
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,3 +5086,4 @@ SceneRoots:
   - {fileID: 1745723888}
   - {fileID: 112518130}
   - {fileID: 1644093833}
+  - {fileID: 107276756}

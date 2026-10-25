@@ -63,23 +63,29 @@ public class BallSelectionManager : MonoBehaviour
         }
     }
 
-    public void HandleBallSelection(int playerId, int index)
+    public void HandleBallSelection(ushort playerId, int index)
     {
         if (NetworkManager.Instance.isHost)
         {
+            BallEntry ball;
+            
             if (playerId == 0)
             {
-                BallEntry ball = ownSelectableBalls[index];
-                
+                ball = ownSelectableBalls[index];
                 Debug.Log($"Host chose {ball.name}");
             }
             else
             {
-                BallEntry ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[(ushort)playerId][index]);
-                
-                
+                ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[playerId][index]);
                 Debug.Log($"Player{playerId} chose {ball.name}");
             }
+            
+            Player player = GameManager.Instance.GetPlayer(playerId);
+            player.selectedBall = ball;
+            
+            BallManager.Instance.SpawnBall(player.id, ball.type);
         }
+        
+        UIManager.Instance.SwitchToUI(UIState.Arena);
     }
 }

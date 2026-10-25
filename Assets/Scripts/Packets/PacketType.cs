@@ -10,4 +10,5 @@ public enum ServerPacket : ushort
     PlayerConnected,
     PlayerDisconnected,
     SelectableBalls,
+    SpawnBall,
 }

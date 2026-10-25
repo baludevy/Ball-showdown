@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class Entity : MonoBehaviour
+public class Entity : MonoBehaviour
 {
     public ushort entityId {get; private set; }
 

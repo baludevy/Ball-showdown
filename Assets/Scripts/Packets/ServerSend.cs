@@ -56,4 +56,13 @@ public static class ServerSend
             }
         });
     }
+
+    public static void SpawnBall(ushort ownerId, BallType ball)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.SpawnBall, writer =>
+        {
+            writer.Put(ownerId);
+            writer.Put((byte)ball);
+        });
+    }
 }

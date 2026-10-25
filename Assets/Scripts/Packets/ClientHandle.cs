@@ -54,4 +54,12 @@ public static class ClientHandle
         
         UIManager.Instance.ballSelectionUI.DisplayBallCards();
     }
+
+    public static void SpawnBall(NetDataReader reader)
+    {
+        ushort ownerId = reader.GetUShort();
+        BallType ballType = (BallType)reader.GetByte();
+        
+        BallManager.Instance.SpawnBall(ownerId, ballType);
+    }
 }
