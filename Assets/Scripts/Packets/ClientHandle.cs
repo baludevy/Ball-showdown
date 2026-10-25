@@ -1,4 +1,5 @@
-﻿using LiteNetLib.Utils;
+﻿using System.Collections.Generic;
+using LiteNetLib.Utils;
 using UnityEngine;
 
 public static class ClientHandle
@@ -30,5 +31,27 @@ public static class ClientHandle
         
         GameManager.Instance.RemovePlayer(id);
         Debug.Log($"Player {id} disconnected");
+    }
+
+    public static void SelectableBalls(NetDataReader reader)
+    {
+        int ballCount = reader.GetInt();
+
+        List<BallType> ballTypes = new List<BallType>();
+
+        for (int i = 0; i < ballCount; i++)
+        {
+            BallType ball = (BallType)reader.GetByte();
+            ballTypes.Add(ball);
+        }
+        
+        foreach (BallType ballType in ballTypes)
+        {
+            BallEntry ball = BallCatalog.Instance.GetBall(ballType);
+            BallSelectionManager.Instance.ownSelectableBalls.Clear();
+            BallSelectionManager.Instance.ownSelectableBalls.Add(ball);
+        }
+        
+        UIManager.Instance.ballSelectionUI.DisplayBallCards();
     }
 }

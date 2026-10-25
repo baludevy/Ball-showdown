@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BallSelect:
                 ui.SwitchToUI(UIState.BallSelection);
+                
+                BallSelectionManager.Instance.SendSelectableBalls();
                 break;
             case GameState.Showdown:
                 break;

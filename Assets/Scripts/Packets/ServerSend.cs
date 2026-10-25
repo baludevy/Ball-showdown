@@ -1,4 +1,6 @@
-﻿public static class ServerSend
+﻿using System.Collections.Generic;
+
+public static class ServerSend
 {
     public static void CurrentGameState(int toId, GameState gameState)
     {
@@ -7,7 +9,7 @@
             writer.Put((ushort)gameState);
         });
     }
-    
+
     public static void CurrentGameState(GameState gameState)
     {
         NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.CurrentGameState, writer =>
@@ -42,8 +44,16 @@
         });
     }
 
-    public static void SelectableBalls(int toId)
+    public static void SelectableBalls(ushort toId, List<BallType> balls)
     {
-        
+        NetworkManager.Instance.Server.SendPacketTo(ServerPacket.PlayerDisconnected, toId, writer =>
+        {
+            writer.Put(balls.Count);
+
+            foreach (BallType ball in balls)
+            {
+                writer.Put((byte)ball);
+            }
+        });
     }
 }

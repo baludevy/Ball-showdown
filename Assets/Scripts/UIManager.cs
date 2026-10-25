@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject joinUI;
 
     public LobbyUIManager lobbyUI;
+    public BallSelectionUIManager ballSelectionUI;
 
     private void Awake()
     {
@@ -68,6 +69,8 @@ public class UIManager : MonoBehaviour
                 connectionUI.SetActive(false);
                 break;
             case UIState.BallSelection:
+                ballSelectionUI.gameObject.SetActive(true);
+                
                 lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);

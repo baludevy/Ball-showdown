@@ -49,4 +49,6 @@ public class BallCatalog : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
+    public BallEntry GetBall(BallType type) => balls.Find(x => x.type == type);
 }

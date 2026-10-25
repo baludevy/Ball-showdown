@@ -21,6 +21,7 @@ public class Client
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.CurrentGameState, ClientHandle.CurrentGameState);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerConnected, ClientHandle.PlayerConnected);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerDisconnected, ClientHandle.PlayerDisconnected);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.SelectableBalls, ClientHandle.SelectableBalls);
     }
 
     public void Connect(string ip, int port = 6900)
