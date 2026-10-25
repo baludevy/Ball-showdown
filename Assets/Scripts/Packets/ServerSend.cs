@@ -117,4 +117,21 @@ public static class ServerSend
             writer.Put(damage);
         });
     }
+
+    public static void PlayerWon(ushort id)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.PlayerWon, writer =>
+        {
+            writer.Put(id);
+        });
+    }
+
+    public static void VerityUpgrade(ushort id, int stage)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.VerityUpgrade, writer =>
+        {
+            writer.Put(id);
+            writer.Put(stage);
+        });
+    }
 }

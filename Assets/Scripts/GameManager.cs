@@ -18,7 +18,7 @@ public class Player
 
     public BallEntry selectedBall;
     public GameObject ball;
-    
+
     public Vector2 direction;
 }
 
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public List<Player> players = new List<Player>();
 
     public static GameManager Instance;
+
+    public DirectionChooser directionChooser;
 
     private void Awake()
     {
@@ -85,9 +87,9 @@ public class GameManager : MonoBehaviour
     {
         UIManager ui = UIManager.Instance;
 
-        if(gameState != GameState.Showdown && gameState != GameState.DirectionChoose)
+        if (gameState != GameState.Showdown && gameState != GameState.DirectionChoose)
             BallManager.Instance.Clear();
-        
+
         switch (gameState)
         {
             case GameState.None:
@@ -97,7 +99,7 @@ public class GameManager : MonoBehaviour
             case GameState.Lobby:
                 BallManager.Instance.Clear();
                 BallArena.Instance.ClearWalls();
-                
+
                 ui.SwitchToUI(UIState.Lobby);
                 break;
             case GameState.BallSelect:
@@ -109,18 +111,19 @@ public class GameManager : MonoBehaviour
                     BallSelectionManager.Instance.needsSelection = players.Count;
                     BallSelectionManager.Instance.SendSelectableBalls();
                 }
-                break; 
+                break;
             case GameState.DirectionChoose:
+                directionChooser.Unlock();
                 BallArena.Instance.SetupArena(BallManager.Instance.spawnedBalls);
-                
+
                 locksNeeded = players.Count;
                 lockedPlayers.Clear();
                 ui.SwitchToUI(UIState.DirectionChoose);
-                
+
                 break;
             case GameState.Showdown:
                 Debug.Log("ball mothafucking showdown");
-                
+
                 ui.SwitchToUI(UIState.Arena);
                 foreach (Ball ball in BallManager.Instance.spawnedBalls)
                 {
@@ -146,12 +149,19 @@ public class GameManager : MonoBehaviour
         if (player == null)
             return;
 
+        bool wasAwaitingSelection = NetworkManager.Instance.isHost &&
+                                    gameState == GameState.BallSelect &&
+                                    player.selectedBall == null;
+
         bool wasAwaitingDirection = NetworkManager.Instance.isHost &&
-            gameState == GameState.DirectionChoose &&
-            !lockedPlayers.Contains(id);
+                                    gameState == GameState.DirectionChoose &&
+                                    !lockedPlayers.Contains(id);
 
         players.Remove(player);
         BallManager.Instance.DestroyBall(id);
+
+        if (wasAwaitingSelection)
+            BallSelectionManager.Instance.HandlePlayerDisconnectedBeforeSelecting();
 
         if (wasAwaitingDirection)
         {

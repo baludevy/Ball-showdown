@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -111,6 +112,20 @@ public class BallManager : MonoBehaviour
 
         Destroy(ball.gameObject);
         spawnedBalls.Remove(ball);
+
+        if (spawnedBalls.Count <= 1)
+        {
+            Ball winner = spawnedBalls.First();
+            
+            ServerSend.PlayerWon(winner.owner.id);
+
+            if (NetworkManager.Instance.isHost)
+            {
+                UIManager.Instance.lobbyUI.PlayerWon(winner.owner.id);
+            }
+            
+            GameManager.Instance.ChangeGameState(GameState.Lobby);
+        }
     }
 
     public Ball GetBall(ushort id) => spawnedBalls.Find(x => x.owner.id == id);

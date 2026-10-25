@@ -17,4 +17,6 @@ public enum ServerPacket : ushort
     BallHealth,
     DestroyBall,
     DamageMarker,
+    PlayerWon,
+    VerityUpgrade,
 }

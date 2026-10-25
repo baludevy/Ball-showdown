@@ -8,10 +8,17 @@ public class DirectionChooser : MonoBehaviour
     private Transform target;
     [SerializeField] private Camera mainCamera;
 
+    public GameObject button;
+    
     private bool isLocked = false;
+    
+    public static DirectionChooser Instance;
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        
         if (target == null)
             target = transform;
 
@@ -76,11 +83,14 @@ public class DirectionChooser : MonoBehaviour
         {
             ClientSend.LockDirection(GetDirection());
         }
+        
+        button.SetActive(false);
     }
 
     public void Unlock()
     {
         isLocked = false;
+        button.SetActive(true);
     }
 
     public Vector2 GetDirection()

@@ -105,6 +105,22 @@ public static class ClientHandle
         
         BallManager.Instance.DestroyBall(id);
     }
+    public static void PlayerWon(NetDataReader reader)
+    {
+        ushort id = reader.GetUShort();
+        
+        UIManager.Instance.lobbyUI.PlayerWon(id);
+    }
+
+    public static void VerityUpgrade(NetDataReader reader)
+    {
+        ushort id = reader.GetUShort();
+        int stage = reader.GetInt();
+
+        VerityBall vBall = BallManager.Instance.GetBall(id) as VerityBall;
+        if (vBall != null)
+            vBall.UpgradeSprite(stage);
+    }
 
     public static void DamageMarker(NetDataReader reader)
     {

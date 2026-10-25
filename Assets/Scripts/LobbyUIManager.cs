@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class LobbyUIManager : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class LobbyUIManager : MonoBehaviour
     public Transform lobbyPlayersParent;
 
     public GameObject startButton;
+    
+    public TMP_Text playerWonText;
 
     public void UpdateLobbyUI()
     {
@@ -27,5 +30,13 @@ public class LobbyUIManager : MonoBehaviour
     public void StartGame()
     {
         GameManager.Instance.ChangeGameState(GameState.BallSelect);
+    }
+
+    public void PlayerWon(ushort id)
+    {
+        Player player = GameManager.Instance.GetPlayer(id);
+        
+        string username = player.username;
+        playerWonText.text = $"{username} won the game!";
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using UnityEngine;
 
 public static class PacketRouter
 {
@@ -42,9 +43,9 @@ public static class PacketRouter
 
             callback(sender, reader);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            
+            Debug.LogException(exception);
         }
         finally
         {
@@ -66,9 +67,9 @@ public static class PacketRouter
             
             callback(reader);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
-            
+            Debug.LogException(exception);
         }
         finally
         {

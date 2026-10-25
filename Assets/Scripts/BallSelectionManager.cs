@@ -115,19 +115,28 @@ public class BallSelectionManager : MonoBehaviour
         player.selectedBall = ball;
 
         needsSelection--;
+        TryStartDirectionChoose();
+    }
 
-        if (needsSelection == 0)
+    public void HandlePlayerDisconnectedBeforeSelecting()
+    {
+        needsSelection = Mathf.Max(0, needsSelection - 1);
+        TryStartDirectionChoose();
+    }
+
+    private void TryStartDirectionChoose()
+    {
+        if (needsSelection != 0)
+            return;
+
+        foreach (Player p in GameManager.Instance.players)
         {
-            foreach (Player p in GameManager.Instance.players)
+            if (p.selectedBall != null)
             {
-                if (p.selectedBall != null)
-                {
-                    BallManager.Instance.SpawnBall(p.id, p.selectedBall.type);
-                }
+                BallManager.Instance.SpawnBall(p.id, p.selectedBall.type);
             }
-
-            GameManager.Instance.ChangeGameState(GameState.DirectionChoose);
         }
 
+        GameManager.Instance.ChangeGameState(GameState.DirectionChoose);
     }
 }

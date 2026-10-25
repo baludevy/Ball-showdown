@@ -28,6 +28,8 @@ public class Client
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.BallHealth, ClientHandle.BallHealth);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.DestroyBall, ClientHandle.DestroyBall);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.DamageMarker, ClientHandle.DamageMarker);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.PlayerWon, ClientHandle.PlayerWon);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.VerityUpgrade, ClientHandle.VerityUpgrade);
     }
 
     public void Connect(string ip, int port = 6900)
