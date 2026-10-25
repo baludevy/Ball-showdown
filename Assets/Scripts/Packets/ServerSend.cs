@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LiteNetLib;
 using UnityEngine;
 
 public static class ServerSend
@@ -67,17 +68,18 @@ public static class ServerSend
         });
     }
 
-    public static void BallPosition(List<BallSnapshot> ballSnapshots)
+    public static void BallPosition(uint tick, List<BallUpdate> ballUpdates)
     {
         NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.BallPosition, writer =>
         {
-            writer.Put(ballSnapshots.Count);
+            writer.Put(ballUpdates.Count);
+            writer.Put(tick);
             
-            foreach (BallSnapshot snapshot in ballSnapshots)
+            foreach (BallUpdate update in ballUpdates)
             {
-                writer.Put(snapshot.id);
-                writer.Put(snapshot.position);
+                writer.Put(update.id);
+                writer.Put(update.position);
             }
-        });
+        }, DeliveryMethod.Unreliable);
     }
 }

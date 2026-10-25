@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class BallManager : MonoBehaviour
 {
     public List<Ball> spawnedBalls = new List<Ball>();
-    
+
+    public uint tick;
+
     public static BallManager Instance;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -31,7 +32,7 @@ public class BallManager : MonoBehaviour
 
         ball.owner = player;
         ball.type = ballType;
-        
+
         spawnedBalls.Add(ball);
 
         if (NetworkManager.Instance.isHost)
@@ -44,28 +45,42 @@ public class BallManager : MonoBehaviour
     {
         if (NetworkManager.Instance.isHost)
         {
-            List<BallSnapshot> ballSnapshots = new List<BallSnapshot>();
+            List<BallUpdate> ballUpdates = new List<BallUpdate>();
 
             foreach (Ball ball in spawnedBalls)
             {
-                ballSnapshots.Add(new BallSnapshot
+                ballUpdates.Add(new BallUpdate
                 {
                     id = ball.owner.id,
                     position = ball.transform.position,
                 });
             }
-        
-            ServerSend.BallPosition(ballSnapshots);
+
+            ServerSend.BallPosition(tick, ballUpdates);
         }
+
+        tick++;
     }
 
-    public void ApplySnapshots(List<BallSnapshot> snapshots)
+    public void ApplyUpdates(uint tick, List<BallUpdate> ballUpdates)
     {
-        foreach (BallSnapshot snapshot in snapshots)
+        foreach (BallUpdate update in ballUpdates)
         {
-            Ball ball = spawnedBalls.Find(x => x.owner.id == snapshot.id);
-            
-            ball.transform.position = snapshot.position;
+            Ball ball = spawnedBalls.Find(x => x.owner.id == update.id);
+
+            if (ball == null)
+                continue;
+
+            BallSnapshot snapshot = new BallSnapshot
+            {
+                position = update.position
+            };
+
+            BallInterpolationManager.Instance.AddSnapshot(
+                ball,
+                tick,
+                snapshot
+            );
         }
     }
 
@@ -75,7 +90,7 @@ public class BallManager : MonoBehaviour
         {
             Destroy(ball.gameObject);
         }
-        
+
         spawnedBalls.Clear();
     }
 }

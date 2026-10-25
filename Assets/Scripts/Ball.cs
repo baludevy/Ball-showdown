@@ -74,4 +74,9 @@ public class Ball : MonoBehaviour
             rb.linearVelocity = direction * speed;
         }
     }
+
+    public void ApplySnapshot(BallSnapshot from, BallSnapshot to, float t)
+    {
+        
+    }
 }

@@ -66,18 +66,19 @@ public static class ClientHandle
     public static void BallPosition(NetDataReader reader)
     {
         int snapshotCount = reader.GetInt();
+        uint tick = reader.GetUInt();
         
-        List<BallSnapshot> snapshots = new List<BallSnapshot>();
+        List<BallUpdate> updates = new List<BallUpdate>();
 
         for (int i = 0; i < snapshotCount; i++)
         {
-            snapshots.Add(new BallSnapshot
+            updates.Add(new BallUpdate
             {
                 id = reader.GetUShort(),
                 position = reader.GetVector3(),
             });
         }
         
-        BallManager.Instance.ApplySnapshots(snapshots);
+        BallManager.Instance.ApplyUpdates(tick, updates);
     }
 }

@@ -262,6 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 107276756}
   - component: {fileID: 107276757}
+  - component: {fileID: 107276758}
   m_Layer: 0
   m_Name: BallManager
   m_TagString: Untagged
@@ -297,6 +298,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallManager
   spawnedBalls: []
+  tick: 0
+--- !u!114 &107276758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107276755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560bed839ee8cc40b21ff103b4383c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BallInterpolationManager
 --- !u!1 &112518129
 GameObject:
   m_ObjectHideFlags: 0
