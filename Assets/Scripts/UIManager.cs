@@ -9,6 +9,7 @@ public enum UIState
     JoinGame,
     Lobby,
     BallSelection,
+    Waiting,
     Arena,
 }
 
@@ -21,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject connectionUI;
     [SerializeField] private GameObject hostUI;
     [SerializeField] private GameObject joinUI;
+    [SerializeField] private GameObject waitingUI;
 
     public LobbyUIManager lobbyUI;
     public BallSelectionUIManager ballSelectionUI;
@@ -47,6 +49,7 @@ public class UIManager : MonoBehaviour
                 lobbyUI.gameObject.SetActive(false);
                 connectionUI.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
+                waitingUI.SetActive(false);
                 break;
             case UIState.HostGame:
                 connectionUI.SetActive(true);
@@ -56,6 +59,7 @@ public class UIManager : MonoBehaviour
                 mainMenuUI.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
+                waitingUI.SetActive(false);
                 break;
             case UIState.JoinGame:
                 connectionUI.SetActive(true);
@@ -65,6 +69,7 @@ public class UIManager : MonoBehaviour
                 mainMenuUI.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
+                waitingUI.SetActive(false);
                 break;
             case UIState.Lobby:
                 lobbyUI.gameObject.SetActive(true);
@@ -72,6 +77,7 @@ public class UIManager : MonoBehaviour
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
+                waitingUI.SetActive(false);
                 break;
             case UIState.BallSelection:
                 ballSelectionUI.gameObject.SetActive(true);
@@ -79,8 +85,19 @@ public class UIManager : MonoBehaviour
                 lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
+                waitingUI.SetActive(false);
+                break;
+            case UIState.Waiting:
+                waitingUI.SetActive(true);
+                
+                ballSelectionUI.gameObject.SetActive(false);
+                lobbyUI.gameObject.SetActive(false);
+                mainMenuUI.SetActive(false);
+                connectionUI.SetActive(false);
                 break;
             case UIState.Arena:
+                
+                waitingUI.SetActive(false);
                 ballSelectionUI.gameObject.SetActive(false);
                 lobbyUI.gameObject.SetActive(false);
                 mainMenuUI.SetActive(false);

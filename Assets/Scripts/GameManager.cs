@@ -16,7 +16,7 @@ public class Player
     public string username;
 
     public BallEntry selectedBall;
-    
+    public GameObject ball;
 }
 
 public class GameManager : MonoBehaviour

@@ -25,6 +25,6 @@ public static class ServerHandle
     {
         int index = reader.GetByte();
         
-        BallSelectionManager.Instance.HandleBallSelection(from.Id, index);
+        BallSelectionManager.Instance.HandleBallSelection((ushort)from.Id, index);
     }
 }
