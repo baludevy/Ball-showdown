@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class NetworkManager : MonoBehaviour
 {
-    public Client Client;
-    public Server Server;
+    [NonSerialized] public Client Client;
+    [NonSerialized] public Server Server;
 
     [SerializeField] private ConnectionUIManager connectionUIManager;
 
     public bool isHost;
-    
+
     public static NetworkManager Instance;
 
     private void Awake()
@@ -35,13 +36,13 @@ public class NetworkManager : MonoBehaviour
         Server.Start();
 
         isHost = true;
-        
+
         GameManager.Instance.AddPlayer(new Player
         {
             id = 0,
             username = connectionUIManager.GetName()
         });
-        
+
         GameManager.Instance.ChangeGameState(GameState.Lobby, broadcast: false);
     }
 
@@ -74,7 +75,9 @@ public class NetworkManager : MonoBehaviour
         }
 
         isHost = false;
-        
+
+        GameManager.Instance.players.Clear();
+        UIManager.Instance.lobbyUI.UpdateLobbyUI();
         GameManager.Instance.ChangeGameState(GameState.None);
     }
 

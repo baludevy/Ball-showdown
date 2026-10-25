@@ -61,7 +61,6 @@ public class Server
     {
         Debug.Log($"Incoming connection from {peer.Address}");
         
-        
         foreach (Player player in GameManager.Instance.players)
         {
             ServerSend.PlayerConnected(peer.Id, player);

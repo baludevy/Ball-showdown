@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 {
     public GameState gameState = GameState.None;
 
-    public List<Player> players = new List<Player>();
+    [NonSerialized] public List<Player> players = new List<Player>();
 
     public static GameManager Instance;
 
@@ -71,11 +71,13 @@ public class GameManager : MonoBehaviour
     public void AddPlayer(Player player)
     {
         players.Add(player);
+        UIManager.Instance.lobbyUI.UpdateLobbyUI();
     }
 
     public void RemovePlayer(ushort id)
     {
         players.Remove(GetPlayer(id));
+        UIManager.Instance.lobbyUI.UpdateLobbyUI();
     }
 
     public Player GetPlayer(ushort id) => players.Find(x => x.id == id);

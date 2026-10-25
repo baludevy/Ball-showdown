@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject hostUI;
     [SerializeField] private GameObject joinUI;
 
-    [SerializeField] private GameObject lobbyUI;
+    public LobbyUIManager lobbyUI;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
             case UIState.MainMenu:
                 mainMenuUI.SetActive(true);
 
-                lobbyUI.SetActive(false);
+                lobbyUI.gameObject.SetActive(false);
                 connectionUI.SetActive(false);
                 break;
             case UIState.HostGame:
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
                 joinUI.SetActive(false);
 
                 mainMenuUI.SetActive(false);
-                lobbyUI.SetActive(false);
+                lobbyUI.gameObject.SetActive(false);
                 break;
             case UIState.JoinGame:
                 connectionUI.SetActive(true);
@@ -58,10 +58,10 @@ public class UIManager : MonoBehaviour
                 joinUI.SetActive(true);
 
                 mainMenuUI.SetActive(false);
-                lobbyUI.SetActive(false);
+                lobbyUI.gameObject.SetActive(false);
                 break;
             case UIState.Lobby:
-                lobbyUI.SetActive(true);
+                lobbyUI.gameObject.SetActive(true);
 
                 mainMenuUI.SetActive(false);
                 connectionUI.SetActive(false);
