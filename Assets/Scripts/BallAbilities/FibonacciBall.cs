@@ -16,12 +16,12 @@ public class FibonacciBall : Ball
         return currentDamage;
     }
 
-    public override void OnCollisionWithBall(Ball otherBall)
+    public override void OnCollisionWithBall(Ball otherBall, Vector2 hitPoint)
     {
         if (health <= 0 || otherBall.health <= 0)
             return;
 
-        base.OnCollisionWithBall(otherBall);
+        base.OnCollisionWithBall(otherBall, hitPoint);
 
         int nextDamage = currentDamage + previousDamage;
 

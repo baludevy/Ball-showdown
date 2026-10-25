@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using LiteNetLib;
+using UnityEngine;
 
 public static class ServerSend
 {
@@ -99,13 +100,21 @@ public static class ServerSend
             writer.Put(health);
         });
     }
+
+    public static void DestroyBall(ushort id)
+    {
+        NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.DestroyBall, writer =>
+        {
+            writer.Put(id);
+        });
+    }
     
-    public static void DamageMarker(ushort id, int health)
+    public static void DamageMarker(Vector2 position, int damage)
     {
         NetworkManager.Instance.Server.SendPacketToAll(ServerPacket.DamageMarker, writer =>
         {
-            writer.Put(id);
-            writer.Put(health);
+            writer.Put(position);
+            writer.Put(damage);
         });
     }
 }

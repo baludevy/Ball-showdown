@@ -27,7 +27,8 @@ public class ChargeBall : Ball
         if (!IsHost || health <= 0)
             return;
 
-        chargeTimer += Time.fixedDeltaTime;
+        if(move)
+            chargeTimer += Time.fixedDeltaTime;
 
         if (chargeTimer >= chargeInterval)
         {
@@ -40,7 +41,7 @@ public class ChargeBall : Ball
     {
         if (charges >= maxCharges)
             return;
-        
+
         charges++;
 
         transform.localScale =
@@ -50,12 +51,12 @@ public class ChargeBall : Ball
             originalDamage + charges * damageIncrease;
     }
 
-    public override void OnCollisionWithBall(Ball otherBall)
+    public override void OnCollisionWithBall(Ball otherBall, Vector2 hitPoint)
     {
         if (health <= 0 || otherBall.health <= 0)
             return;
 
-        base.OnCollisionWithBall(otherBall);
+        base.OnCollisionWithBall(otherBall, hitPoint);
 
         ResetCharge();
     }

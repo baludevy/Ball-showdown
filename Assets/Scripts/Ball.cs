@@ -35,25 +35,51 @@ public class Ball : MonoBehaviour
 
     public void Initialize()
     {
-        username.text = owner.username;
-        healthBar.value = health / 100f;
+        if (owner == null)
+        {
+            Debug.LogError("Cannot initialize a ball without an owner.");
+            return;
+        }
+
+        if (username != null)
+            username.text = owner.username;
+
+        UpdateHealthBar();
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, Vector2 hitPoint)
     {
-        if (!IsHost || health <= 0)
+        if (!IsHost || health <= 0 || damage <= 0)
             return;
 
         health = Mathf.Max(0, health - damage);
-        healthBar.value = health / 100f;
+        UpdateHealthBar();
+
+        Vector3 markerPosition = Vector2.Lerp(hitPoint, rb.position, 0.8f);
+
+        ServerSend.DamageMarker(markerPosition, damage);
+        DamageMarkerHelper.Instance?.SpawnDamageMarker(markerPosition, damage);
+
+        if (health <= 0)
+        {
+            ServerSend.DestroyBall(owner.id);
+            BallManager.Instance.DestroyBall(owner.id);
+            return;
+        }
 
         ServerSend.BallHealth(owner.id, health);
     }
 
     public void SetHealth(int health)
     {
-        this.health = health;
-        healthBar.value = health / 100f;
+        this.health = Mathf.Max(0, health);
+        UpdateHealthBar();
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (healthBar != null)
+            healthBar.value = health / 100f;
     }
 
     protected virtual void Start()
@@ -102,7 +128,7 @@ public class Ball : MonoBehaviour
             OnCollisionWithWall();
 
         if (otherBall != null)
-            OnCollisionWithBall(otherBall);
+            OnCollisionWithBall(otherBall, collision.GetContact(0).point);
 
         Vector2 normal = collision.GetContact(0).normal;
 
@@ -131,17 +157,16 @@ public class Ball : MonoBehaviour
             UpdateVelocity();
         }
     }
-
     public virtual void OnCollisionWithWall()
     {
     }
 
-    public virtual void OnCollisionWithBall(Ball otherBall)
+    public virtual void OnCollisionWithBall(Ball otherBall, Vector2 hitPoint)
     {
         if (health <= 0 || otherBall.health <= 0)
             return;
 
-        otherBall.TakeDamage(GetContactDamage());
+        otherBall.TakeDamage(GetContactDamage(), hitPoint);
     }
 
     public void ApplySnapshot(BallSnapshot from, BallSnapshot to, float t)

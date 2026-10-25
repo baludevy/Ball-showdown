@@ -43,6 +43,8 @@ public class UIManager : MonoBehaviour
 
     public void SwitchToUI(UIState state)
     {
+        directionChooseUI.SetActive(state == UIState.DirectionChoose);
+
         switch (state)
         {
             case UIState.MainMenu:

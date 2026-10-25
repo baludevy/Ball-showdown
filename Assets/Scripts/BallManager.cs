@@ -26,7 +26,18 @@ public class BallManager : MonoBehaviour
     public void SpawnBall(ushort ownerId, BallType ballType)
     {
         Player player = GameManager.Instance.GetPlayer(ownerId);
-        GameObject prefab = BallCatalog.Instance.GetBall(ballType).prefab;
+        BallEntry ballEntry = BallCatalog.Instance.GetBall(ballType);
+
+        if (player == null || ballEntry == null || ballEntry.prefab == null)
+        {
+            Debug.LogWarning($"Could not spawn {ballType} for player {ownerId}.");
+            return;
+        }
+
+        if (GetBall(ownerId) != null)
+            return;
+
+        GameObject prefab = ballEntry.prefab;
 
         Ball ball = Instantiate(prefab).GetComponent<Ball>();
 
@@ -89,6 +100,19 @@ public class BallManager : MonoBehaviour
         }
     }
 
+    public void DestroyBall(ushort id)
+    {
+        Ball ball = GetBall(id);
+
+        BallInterpolationManager.Instance?.RemoveBall(id);
+
+        if (ball == null)
+            return;
+
+        Destroy(ball.gameObject);
+        spawnedBalls.Remove(ball);
+    }
+
     public Ball GetBall(ushort id) => spawnedBalls.Find(x => x.owner.id == id);
     public Ball GetMyBall() => spawnedBalls.Find(x => x.owner.id == NetworkManager.Instance.myId);
 
@@ -100,5 +124,7 @@ public class BallManager : MonoBehaviour
         }
 
         spawnedBalls.Clear();
+        BallInterpolationManager.Instance?.ClearSnapshots();
+        tick = 0;
     }
 }

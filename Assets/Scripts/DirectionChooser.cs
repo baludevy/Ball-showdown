@@ -21,12 +21,14 @@ public class DirectionChooser : MonoBehaviour
 
     private void OnEnable()
     {
-        target = BallManager.Instance.GetMyBall().arrow;
+        Ball ball = BallManager.Instance.GetMyBall();
+        target = ball != null ? ball.arrow : null;
+        isLocked = false;
     }
 
     private void Update()
     {
-        if (isLocked || Mouse.current == null || mainCamera == null)
+        if (isLocked || target == null || Mouse.current == null || mainCamera == null)
             return;
         
         if (EventSystem.current != null &&
@@ -61,6 +63,9 @@ public class DirectionChooser : MonoBehaviour
 
     public void Lock()
     {
+        if (isLocked || target == null)
+            return;
+
         isLocked = true;
 
         if (NetworkManager.Instance.isHost)
@@ -80,7 +85,7 @@ public class DirectionChooser : MonoBehaviour
 
     public Vector2 GetDirection()
     {
-        return target.right.normalized;
+        return target != null ? (Vector2)target.right.normalized : Vector2.zero;
     }
 
     public bool IsLocked()

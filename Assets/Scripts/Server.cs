@@ -25,9 +25,9 @@ public class Server
     {
         Debug.Log($"Starting server on {port}...");
 
-        server.Start(port);
         AssignEvents();
         RegisterPackets();
+        server.Start(port);
     }
 
     public void Stop()
@@ -76,9 +76,13 @@ public class Server
     private static void OnPeerDisconnectedEvent(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         Debug.Log($"Player {peer.Id} disconnected, reason: {disconnectInfo.Reason}");
-        
+
+        bool hadBall = BallManager.Instance.GetBall((ushort)peer.Id) != null;
         GameManager.Instance.RemovePlayer((ushort)peer.Id);
-        
+
+        if (hadBall)
+            ServerSend.DestroyBall((ushort)peer.Id);
+
         ServerSend.PlayerDisconnected((ushort)peer.Id);
     }
 

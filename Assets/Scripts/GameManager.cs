@@ -55,10 +55,24 @@ public class GameManager : MonoBehaviour
     }
 
     private int locksNeeded;
+    private readonly HashSet<ushort> lockedPlayers = new HashSet<ushort>();
 
     public void LockDirection(Vector2 direction, ushort playerId)
     {
-        BallManager.Instance.spawnedBalls[playerId].direction = direction;
+        if (gameState != GameState.DirectionChoose ||
+            direction.sqrMagnitude < 0.0001f ||
+            !lockedPlayers.Add(playerId))
+            return;
+
+        Ball ball = BallManager.Instance.GetBall(playerId);
+
+        if (ball == null)
+        {
+            lockedPlayers.Remove(playerId);
+            return;
+        }
+
+        ball.direction = direction.normalized;
         locksNeeded--;
 
         if (locksNeeded == 0)
@@ -81,18 +95,26 @@ public class GameManager : MonoBehaviour
                 ui.SwitchToUI(UIState.MainMenu);
                 break;
             case GameState.Lobby:
+                BallManager.Instance.Clear();
+                BallArena.Instance.ClearWalls();
+                
                 ui.SwitchToUI(UIState.Lobby);
                 break;
             case GameState.BallSelect:
                 ui.SwitchToUI(UIState.BallSelection);
 
-                BallSelectionManager.Instance.needsSelection = players.Count;
-                BallSelectionManager.Instance.SendSelectableBalls();
+                if (NetworkManager.Instance.isHost)
+                {
+                    BallSelectionManager.Instance.ResetSelections();
+                    BallSelectionManager.Instance.needsSelection = players.Count;
+                    BallSelectionManager.Instance.SendSelectableBalls();
+                }
                 break; 
             case GameState.DirectionChoose:
                 BallArena.Instance.SetupArena(BallManager.Instance.spawnedBalls);
                 
                 locksNeeded = players.Count;
+                lockedPlayers.Clear();
                 ui.SwitchToUI(UIState.DirectionChoose);
                 
                 break;
@@ -119,7 +141,26 @@ public class GameManager : MonoBehaviour
 
     public void RemovePlayer(ushort id)
     {
-        players.Remove(GetPlayer(id));
+        Player player = GetPlayer(id);
+
+        if (player == null)
+            return;
+
+        bool wasAwaitingDirection = NetworkManager.Instance.isHost &&
+            gameState == GameState.DirectionChoose &&
+            !lockedPlayers.Contains(id);
+
+        players.Remove(player);
+        BallManager.Instance.DestroyBall(id);
+
+        if (wasAwaitingDirection)
+        {
+            locksNeeded = Mathf.Max(0, locksNeeded - 1);
+
+            if (locksNeeded == 0)
+                ChangeGameState(GameState.Showdown);
+        }
+
         UIManager.Instance.lobbyUI.UpdateLobbyUI();
     }
 

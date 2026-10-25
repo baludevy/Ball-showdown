@@ -7,12 +7,12 @@ public class VerityBall : Ball
 
     [SerializeField] private int damageIncrease = 5;
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Vector2 hitPoint)
     {
         if (!IsHost || health <= 0 || damage <= 0)
             return;
 
-        base.TakeDamage(damage);
+        base.TakeDamage(damage, hitPoint);
 
         if (health <= 0)
             return;

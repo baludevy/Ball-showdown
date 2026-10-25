@@ -15,5 +15,6 @@ public enum ServerPacket : ushort
     SpawnBall,
     BallPosition,
     BallHealth,
+    DestroyBall,
     DamageMarker,
 }

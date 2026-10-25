@@ -35,7 +35,8 @@ public static class ClientHandle
     public static void PlayerDisconnected(NetDataReader reader)
     {
         ushort id = reader.GetUShort();
-        
+
+        BallManager.Instance.DestroyBall(id);
         GameManager.Instance.RemovePlayer(id);
         Debug.Log($"Player {id} disconnected");
     }
@@ -96,5 +97,20 @@ public static class ClientHandle
         int health = reader.GetInt();
         
         BallManager.Instance.GetBall(id).SetHealth(health);
+    }
+
+    public static void DestroyBall(NetDataReader reader)
+    {
+        ushort id = reader.GetUShort();
+        
+        BallManager.Instance.DestroyBall(id);
+    }
+
+    public static void DamageMarker(NetDataReader reader)
+    {
+        Vector2 position = reader.GetVector2();
+        int damage = reader.GetInt();
+        
+        DamageMarkerHelper.Instance.SpawnDamageMarker(position, damage);
     }
 }

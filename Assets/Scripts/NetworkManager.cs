@@ -34,6 +34,7 @@ public class NetworkManager : MonoBehaviour
 
     public void Host()
     {
+        myId = 0;
         Server = new Server();
         Server.Start();
 
@@ -77,6 +78,7 @@ public class NetworkManager : MonoBehaviour
         }
 
         isHost = false;
+        myId = 0;
 
         GameManager.Instance.players.Clear();
         UIManager.Instance.lobbyUI.UpdateLobbyUI();

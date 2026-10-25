@@ -26,15 +26,17 @@ public class Client
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.SpawnBall, ClientHandle.SpawnBall);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.BallPosition, ClientHandle.BallPosition);
         PacketRouter.RegisterClientPacket((ushort)ServerPacket.BallHealth, ClientHandle.BallHealth);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.DestroyBall, ClientHandle.DestroyBall);
+        PacketRouter.RegisterClientPacket((ushort)ServerPacket.DamageMarker, ClientHandle.DamageMarker);
     }
 
     public void Connect(string ip, int port = 6900)
     {
-        client.Start();
-        client.Connect(ip, port, NetworkSettings.ConnectionKey);
-
         AssignEvents();
         RegisterPackets();
+
+        client.Start();
+        client.Connect(ip, port, NetworkSettings.ConnectionKey);
     }
 
     public void Disconnect()
@@ -80,6 +82,7 @@ public class Client
         writer.Put((ushort)packetId);
         writeData?.Invoke(writer);
 
-        serverPeer.Send(writer, deliveryMethod);
+        if (serverPeer != null)
+            serverPeer.Send(writer, deliveryMethod);
     }
 }

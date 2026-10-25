@@ -41,7 +41,7 @@ public class BurstBall : Ball
         isBursting = true;
 
         speed = normalSpeed * speedMultiplier;
-        UpdateVelocity();   
+        UpdateVelocity();
     }
 
     private void EndBurst()
@@ -60,12 +60,11 @@ public class BurstBall : Ball
         return base.GetContactDamage();
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Vector2 hitPoint)
     {
         if (isBursting)
             return;
 
-        base.TakeDamage(damage);
-    }   
+        base.TakeDamage(damage, hitPoint);
+    }
 }
-    

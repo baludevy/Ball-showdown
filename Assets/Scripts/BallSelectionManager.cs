@@ -40,6 +40,8 @@ public class BallSelectionManager : MonoBehaviour
 
     public void SendSelectableBalls()
     {
+        selectableBallsByPlayer.Clear();
+
         foreach (Player player in GameManager.Instance.players)
         {
             if (player.id == 0 && NetworkManager.Instance.isHost)
@@ -65,16 +67,30 @@ public class BallSelectionManager : MonoBehaviour
         }
     }
 
+    public void ResetSelections()
+    {
+        selectableBallsByPlayer.Clear();
+        ownSelectableBalls.Clear();
+        needsSelection = 0;
+
+        foreach (Player player in GameManager.Instance.players)
+            player.selectedBall = null;
+    }
+
 
     public void HandleBallSelection(ushort playerId, int index)
     {
         Player player = GameManager.Instance.GetPlayer(playerId);
-        if (player.selectedBall != null) return;
+        if (player == null || player.selectedBall != null)
+            return;
 
         BallEntry ball;
 
         if (playerId == 0)
         {
+            if (index < 0 || index >= ownSelectableBalls.Count)
+                return;
+
             ball = ownSelectableBalls[index];
             Debug.Log($"Host chose {ball.name}");
 
@@ -82,9 +98,18 @@ public class BallSelectionManager : MonoBehaviour
         }
         else
         {
-            ball = BallCatalog.Instance.GetBall(selectableBallsByPlayer[playerId][index]);
-            Debug.Log($"Player{playerId} chose {ball.name}");
+            if (!selectableBallsByPlayer.TryGetValue(playerId, out List<BallType> choices) ||
+                index < 0 || index >= choices.Count)
+                return;
+
+            ball = BallCatalog.Instance.GetBall(choices[index]);
         }
+
+        if (ball == null)
+            return;
+
+        if (playerId != 0)
+            Debug.Log($"Player{playerId} chose {ball.name}");
 
 
         player.selectedBall = ball;
